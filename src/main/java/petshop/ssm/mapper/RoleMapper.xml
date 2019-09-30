@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="petshop.ssm.mapper.RoleMapper">
+ 	<insert id="create">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+			select role_seq.nextval from dual
+		</selectKey>
+		insert into role values(#{id},#{name},#{describe})
+	</insert>  
+	<delete id="delete">
+		delete from role where id=#{id}
+	</delete>
+	<update id="update">
+		update role
+		<set>
+			name=#{name}
+		</set>
+		where id=#{id}
+	</update>
+	<select id="retrieveAll" resultType="Role">
+		select * from role
+	</select>
+	<select id="pagination" parameterType="Map" resultType="Role">
+    	select * from role where
+    	<![CDATA[rownum < #{end}]]>
+    	minus  
+    	select * from role where
+    	<![CDATA[rownum < #{start}]]> 
+    </select>
+</mapper>

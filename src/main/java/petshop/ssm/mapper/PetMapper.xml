@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+         
+<mapper namespace="petshop.ssm.mapper.PetMapper">
+	<resultMap id="baseMap" type="petshop.ssm.pojo.Pet">
+		<id property="id" column="id"/>
+		<result property="health" column="health"/>
+		<result property="love" column="love"/>
+		<result property="petName" column="petName"/>
+		<result property="addTime" column="addTime"/>
+		<result property="adoptTime" column="adoptTime"/>
+		<association property="master" javaType="Master">
+			<result property="id" column="id"/>
+			<result property="username" column="username"/>
+		</association>
+		<association property="petType" javaType="PetType">
+			<result property="id" column="id"/>
+			<result property="typeName" column="typeName"/>
+		</association>
+	</resultMap>
+	<sql id="key">id,masterid,typeId,petname,adoptTime,picPath</sql>
+
+	<insert id="create" parameterType="Pet">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+			select pet_seq.nextval from dual
+		</selectKey>
+		insert into pet (<include refid="key"></include>)values(#{id},null,#{petTypeId},#{petName},
+		null,#{picPath})
+	</insert>  
+	<delete id="delete">
+		delete from pet where id=#{id}
+	</delete>
+	<update id="update">
+		update pet
+		<set>
+			masterId=#{masterId},
+			typeId=#{typeId},
+			petName=#{petName},
+			health=#{health},
+			love=#{love},
+			adoptTime=#{adoptTime},
+			picPath=#{picPath}
+		</set>
+		where id=#{id}
+	</update> 
+	
+	<update id="adoptPet" parameterType="Map">
+		update pet set masterId=#{masterId},adoptTime=#{data}
+		where id=#{petId}
+	</update>
+	<select id="retrieveAll">
+		select * from pet
+	</select>
+	<select id="retrieveSize" resultType="Integer">
+		select count(id) from pet
+	</select>
+    <select id="pagination" parameterType="Map" resultMap="baseMap">
+	    select p.*,pt.*,m.* from  
+		(select * from pet where <![CDATA[rownum < #{end}]]> minus  
+		select * from pet where <![CDATA[rownum < #{start}]]> )p 
+		left join pet_type pt on p.typeId=pt.id 
+		left join master m    on p.masterId = m.id
+    </select>
+    <select id="retrieveByAdoptTime" parameterType="Map" resultMap="baseMap">
+		select p.*,pt.*,m.* from
+		(select * from pet where <![CDATA[rownum < #{end}]]> minus  
+		select * from pet where <![CDATA[rownum < #{start}]]> )p 
+		left join pet_type pt on p.typeId=pt.id 
+		left join master m    on p.masterId = m.id
+		<where>
+			<choose>
+				<when test="status == 1">p.adoptTime is null</when>
+				<when test="status == 2">p.adoptTime is not null</when>
+				<when test="status == 3">pt.id=#{id}</when>
+				<otherwise></otherwise>
+			</choose>
+		</where>
+	</select>
+	<select id="retrieveByManyKey" parameterType="Map" resultMap="baseMap">
+		select p.*,pt.*,m.* from
+		(select * from pet where <![CDATA[rownum < #{end}]]> minus  
+		select * from pet where <![CDATA[rownum < #{start}]]> )p 
+		left join pet_type pt on p.typeId=pt.id 
+		left join master m    on p.masterId = m.id
+		<where>
+			<if test="adoptStatus==1">p.adoptTime is null and</if>
+			<if test="adoptStatus==2">p.adoptTime is not null and</if>
+			<if test="id != null &amp;&amp; id &gt; 0">pt.id=#{id}</if>
+		</where>
+	</select>
+    <select id="retrieveSizeByAdoptTime" parameterType="Map" resultType="Integer">
+    	select count(id) from pet
+    	<where> 
+    		<choose> 
+    			<when test="status == 1">adoptTime is null</when>
+    			<when test="status == 2">adoptTime is not null</when>
+    		</choose>
+    	</where>
+    </select>
+</mapper>

@@ -1,0 +1,120 @@
+	th{
+		text-align:center;
+	}
+
+	.table-search,.table-search input,.cells-label{
+		float: left;
+	}
+	.table-search{
+		width: 160px;
+		margin-right:4px;
+	}
+	.cells-label{
+		width:60px;
+		height:38px;
+		margin-top:0;
+		margin-right:0;
+	}
+	.cell-label{
+		padding:5px 0;
+		text-align:center;
+	}
+	.table-search .cells{
+		width: 100px; 
+	}
+	.table-responsive{
+		width: 830px;
+		float: left;
+		margin-left: 20px;
+	}
+	.table-search-btn{
+		float: right;
+	}
+	.table-search-btn button{
+		margin-right: 15px;
+	}
+	.table-pagination{
+		width: 100%;
+	}
+	.pagination{
+		float:right;
+	}
+	.pagination-index{
+		float: right;
+		width: 590px;
+	}
+	.pagination-redirect{
+		width: 240px;
+		float: right;
+		
+	}
+	.cells{
+		float: left;
+	}
+	.fm-lg-input{
+		width: 60px;
+	}
+	.table-requestable{
+		margin: 0 auto;
+		width: 437px;
+	}
+	.form-cells{
+		width: 437px;
+		
+	}
+	.form-cells-radio{
+		margin: ;
+	}
+	.label-cells-radio{
+		float: left;
+		margin: 0 5px;
+	}
+	.form-cells .form-cells-label{
+		float: left;
+		clear: left;
+		width: 80px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		margin-right: 7px;
+		text-align: center;
+	}
+	.form-cells .form-cells-input,.fm-cl-rd{
+		float: left;
+		width: 350px;
+	}
+		.sidbar{
+		width: 216px;
+		height: 615px;
+		float: left; 
+		background-color: rgb(247,247,247);
+	}
+	.sidbar-card{
+		margin: 0 auto;
+		width: 200px;
+	}
+	.show-layog{
+		width: 100%;
+		height: 800px;
+		border: 1px solid red;
+	}
+	.show-sider{
+		position: absolute;
+		width: 230px;
+		height: 600px;
+		border: 1px solid blue;
+	}
+	.show-nab{
+		width: 100%;
+		height: 30px;
+		border: 1px solid aqua;
+	}
+	.show-table{
+		width: 630px;
+		height: 600px;
+		margin: 0 auto; 
+		border: 1px solid saddlebrown;
+	} 
+	.show-context{
+		width: 100%;
+		margin-left: 230px;
+	}

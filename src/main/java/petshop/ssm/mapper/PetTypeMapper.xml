@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="petshop.ssm.mapper.PetTypeMapper">
+
+	<insert id="create">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+			select pet_type_seq.nextval from dual
+		</selectKey>
+		insert into pet_type values(#{id},#{typeName})
+	</insert>  
+	<delete id="delete">
+		delete from pet_type where id=#{id}
+	</delete>
+	<update id="update">
+		update pet_type
+		<set>
+			typeName=#{typeName}
+		</set>
+		where id=#{id}
+	</update>
+	<select id="retrieveAll" resultType="PetType">
+		select * from pet_type
+	</select>
+	<select id="pagination" parameterType="Map" resultType="PetType">
+    	select * from pet_type where
+    	<![CDATA[rownum < #{end}]]>
+    	minus  
+    	select * from pat_type where
+    	<![CDATA[rownum < #{start}]]> 
+    </select>
+</mapper>

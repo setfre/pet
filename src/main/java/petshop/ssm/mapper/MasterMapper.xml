@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="petshop.ssm.mapper.MasterMapper">
+	<resultMap id="baseMap" type="petshop.ssm.pojo.Master">
+		<id property="id" column="id"/>
+		<result property="username" column="username"/>
+		<result property="loginId" column="loginId"/> 
+		<result property="loginPwd" column="loginPwd"/>
+		<result property="roleId" column="roleId"/>
+		<association property="role" javaType="Role">
+			<result property="id" column="id"/>
+			<result property="name" column="name"/>
+		</association>
+	</resultMap> 
+	<sql id="key">
+		id,username,loginId,loginPwd,roleId
+	</sql>
+	<insert id="create" parameterType="Master">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+			select master_seq.nextval from dual
+		</selectKey>
+		insert into master values(#{id},#{username,jdbcType=VARCHAR},#{loginId},#{loginPwd},#{roleId})
+	</insert>  
+	<delete id="delete" parameterType="Master">
+		delete from master where id=#{id}
+	</delete>
+	<update id="update">
+		update master
+		<set>
+			username=#{username},
+			loginId=#{loginId},
+			loginPwd=#{loginPwd}
+		</set>
+		where id=#{id}
+	</update>
+	<select id="retrieveAll" resultMap="baseMap">
+		select m.*,r.* from master m 
+		left join role r on m.roleId=r.id;
+	</select>
+	<select id="retrieveSize" resultType="Integer">
+		select count(id) from master
+	</select>	
+	<select id="retrieveByUsercode" parameterType="Master"  resultMap="baseMap">
+		select m.*,r.* from master m 
+		left join role r on m.roleId=r.id
+		 where loginId=#{loginId}
+	</select>
+	<select id="pagination" parameterType="Map"  resultMap="baseMap">
+    	select * from master where
+    	<![CDATA[rownum < #{end}]]>
+    	minus   
+    	select * from master where
+    	<![CDATA[rownum < #{start}]]> 
+    </select>
+</mapper>
